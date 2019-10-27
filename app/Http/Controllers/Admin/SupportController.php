@@ -161,7 +161,6 @@ class SupportController extends Controller
                 if (request('status') == 'suspended') {
                     cache()->forever('logout_' . $client->id, true);
                 }
-                $client->client_deposit_total = request()->has('client_deposit_total');
                 if (!$client->exists) {
                     $password = Str::random(6);
                     $client->password = bcrypt($password);
