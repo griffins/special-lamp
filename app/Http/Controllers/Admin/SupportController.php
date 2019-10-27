@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Account;
 use App\Client;
-use App\File;
 use App\Http\Controllers\Controller;
 use App\Invoice;
 use App\Mail\MailMessage;
@@ -14,7 +13,6 @@ use App\Notifications\AdminNomination;
 use App\Notifications\PendingInvoice;
 use App\Notifications\TransactionConfirmation;
 use App\Notifications\TransactionRejected;
-use App\Photo;
 use App\Request;
 use App\Server;
 use App\User;
@@ -43,7 +41,7 @@ class SupportController extends Controller
         switch ($action) {
             case 'users':
                 return $this->users();
-           case 'accountQr':
+            case 'accountQr':
                 return $this->accountQr();
             case 'requests':
                 return $this->requests();
@@ -159,7 +157,7 @@ class SupportController extends Controller
                 request()->validate($rules);
 
                 DB::beginTransaction();
-                $client->fill(request()->only('name', 'status', 'account_id', 'email', 'notes'));
+                $client->fill(request()->only('name', 'status', 'account_id', 'commission', 'email', 'notes'));
                 if (request('status') == 'suspended') {
                     cache()->forever('logout_' . $client->id, true);
                 }

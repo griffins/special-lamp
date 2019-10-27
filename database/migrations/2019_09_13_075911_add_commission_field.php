@@ -14,7 +14,7 @@ class AddCommissionField extends Migration
     public function up()
     {
         Schema::table('clients', function (Blueprint $table) {
-            $table->decimal("profit", 5, 2);
+            $table->decimal("commission", 5, 2);
         });
     }
 
@@ -26,7 +26,7 @@ class AddCommissionField extends Migration
     public function down()
     {
         Schema::table('clients', function (Blueprint $table) {
-            $table->dropColumn("profit");
+            $table->dropColumn("commission");
         });
     }
 }

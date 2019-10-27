@@ -68,23 +68,15 @@
                     @endif
                 </div>
                 <div class="col-2">
-                    <label>% Profit to Receive</label>
-                    <input type="number" name="profits" value="{{ old('profits',$client->profits) }}"
+                    <label>Commission</label>
+                    <input type="number" name="commission" value="{{ old('commission',$client->commission) }}"
                            class="form-control"
-                           placeholder="Profit %">
+                           placeholder="Commission %">
                     @if ($errors->has('profits'))
                         <span class="invalid-feedback d-block" role="alert">
                             <strong>{{ $errors->first('profits') }}</strong>
                         </span>
                     @endif
-                </div>
-                <div class="col-auto">
-                    <label>&nbsp;</label>
-
-                    <label class="custom-control custom-checkbox mt-1">
-                        <input type="checkbox" class="custom-control-input"  name="client_deposit_total" @if(old('client_deposit_total',$client->client_deposit_total) == true) checked="" @endif>
-                        <span class="custom-control-label">Include in Client Deposit Total</span>
-                    </label>
                 </div>
             </div>
 {{--            <div class="row mt-3">--}}
