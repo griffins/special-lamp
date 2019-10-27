@@ -1,0 +1,11 @@
+/**
+Dashboard UI
+ */
+
+@import 'variables';
+@import '~bootstrap/scss/bootstrap.scss';
+@import 'dashboard/dashboard';
+
+// custom
+@import "custom";
+@import "cs";

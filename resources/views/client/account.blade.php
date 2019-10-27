@@ -1,0 +1,90 @@
+<div class="card">
+    <div class="card-status bg-teal"></div>
+    <div class="card-header">
+        <h3 class="card-title">#{{ $client->name }} (USD - {{currency( normalize( $client->balance),true,0)}}
+            )</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            @foreach($periods as $period)
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="mb-1">{{ currency( normalize( $client->transactions()->where('type','profit')->whereBetween('date',[$period->start,$period->end])->profit()),true,0,false) }}</h3>
+                            <div class="text-muted" title="{{ date_range($period->start,$period->end) }}">Profit
+                                ({{ $period->name }})
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+        @php $transactions = $client->transactions()->orderByDesc('created_at')->paginate(); @endphp
+        @if($transactions->count()>0)
+            <h5 id="transactions">Recent Transactions</h5>
+            <table class="table table-striped" >
+                <thead>
+                <tr>
+                    <td><b>ID</b></td>
+                    <td><b>Type</b></td>
+                    <td><b>Item</b></td>
+                    <td><b>Amount</b></td>
+                    <td><b>Date (GMT)</b></td>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach($transactions as $transaction)
+                    <tr>
+                        <td>
+                            <b>
+                                <div class="wrap"> {{ strtoupper(($transaction->id)) }}</div>
+                            </b>
+                        </td>
+                        <td><b>{{ ucfirst( $transaction->type)}}</b></td>
+                        <td><b>{{ $transaction->narration }}</b></td>
+                        <td><b>{{ currency($transaction->amount,true,2) }}</b></td>
+                        <td><b>{{ $transaction->created_at }}</b></td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+            {{ $transactions->fragment('transactions')->render([]) }}
+        @else
+            <div class="jumbotron text-center">
+                No transactions
+            </div>
+        @endif
+        <br>
+    </div>
+    <div class="card-footer">
+    </div>
+</div>
+@section('scripts')
+    <script>
+        function setupInvestor() {
+            $('#edit-investor').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var client = button.data('name');
+                var clientId = button.data('id');
+                var email = button.data('email');
+                var commission = button.data('commission');
+                var modal = $(this);
+                modal.find('.modal-title').text('Edit Investor (' + client + ')');
+                modal.find('.modal-body input[name=email].form-control').val(email);
+                modal.find('.modal-body input[name=name].form-control').val(client);
+                modal.find('.modal-content input[name=investor_id]').val(clientId);
+                modal.find('.modal-body input[name=commission].form-control').val(commission);
+            });
+            $('.assign').on('click', function () {
+                var transaction = $(this);
+                axios.post(transaction.data('url')).then(function (a, b) {
+                    if (a.status === 200) {
+                        transaction.closest('tr').remove();
+                    }
+                });
+            });
+        }
+
+        setupInvestor()
+    </script>
+@endsection
