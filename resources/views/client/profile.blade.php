@@ -1,11 +1,6 @@
 @extends('layouts.main')
 @section('title')
     Account / {{ $client->name }}
-    <a data-turbolinks="false" href="{{route('client.dashboard', ['client' => $client])}}"
-       class="btn btn-primary float-right">
-        @if(user()->role =='admin') Client @else My  @endif
-        Dashboard
-    </a>
     @if(user()->role=='admin')
         @php
             $recipients = base64_encode(json_encode([$client->email]));

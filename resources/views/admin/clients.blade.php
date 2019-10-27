@@ -129,7 +129,7 @@
                 <th class="w-1"></th>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Profit %</th>
+                <th>Commission %</th>
                 <th class="text-left">Joined</th>
                 <th class=""></th>
             </tr>
@@ -143,7 +143,7 @@
                     </td>
                     <td><a href="{{ route('client', compact('client')) }}"> {{$client->name}}</a></td>
                     <td>{{$client->email}}</td>
-                    <td>{{currency( $client->profits)}}</td>
+                    <td>{{currency( $client->commission)}}</td>
                     <td class="text-left">{{$client->created_at->format('jS M, Y')}}</td>
                     <td>
                         <div class="item-action dropdown">

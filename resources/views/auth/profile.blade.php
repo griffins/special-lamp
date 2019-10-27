@@ -61,22 +61,6 @@
                                     </div>
                                 </div>
                                 @csrf
-                                @if($user->role !=='admin')
-                                    <div class="row mt-3">
-                                        <div class="col-12">
-                                            <label>Wallet</label>
-                                            <input type="text" name="wallet"
-                                                   value="{{ old('wallet',$user->wallet) }}"
-                                                   class="form-control d-inline"
-                                                   placeholder="Wallet Address">
-                                            @if ($errors->has('wallet'))
-                                                <span class="invalid-feedback d-block" role="alert">
-                                        <strong>{{ $errors->first('wallet') }}</strong>
-                                    </span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                @endif
                                 <div class="row mt-3">
                                     <div class="col-6">
                                         <button class="btn btn-primary">Update</button>
