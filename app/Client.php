@@ -20,7 +20,7 @@ class Client extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'notes', 'profits', 'wallet', 'status', 'account_id', 'client_deposit_total'
+        'name', 'email', 'password', 'notes', 'status'
     ];
 
     /**

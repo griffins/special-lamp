@@ -34,7 +34,7 @@
                             <div class="text-right">
                                 &nbsp;&nbsp;USD
                             </div>
-                            <div class="h1 m-0">{{ currency($totalFund,true,4) }}</div>
+                            <div class="h1 m-0">{{ currency($totalFund,true,2) }}</div>
                             <div class="text-muted mb-4">Total Club Fund</div>
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                                 @php
                                     $profit  =  \App\Transaction::query()->whereBetween('created_at',[$period->start,$period->end])->profit();
                                 @endphp
-                                <div class="h1 m-0">{{ currency($profit,true,4,!true) }}</div>
+                                <div class="h1 m-0">{{ currency($profit,true,2,!true) }}</div>
                                 <div class="text-muted mb-4"> Profit ({{ $period->name }})</div>
                             </div>
                         </div>
@@ -71,7 +71,7 @@
                     <tr>
                         <td><b>{{  $interest->ticket }}                    </b></td>
                         <td><b>{{ $interest->item }}</b></td>
-                        <td><b>{{ currency( $interest->profit,true,8) }}</b></td>
+                        <td><b>{{ currency( $interest->profit,true,2) }}</b></td>
                         <td><b>{{ $interest->created_at }}</b></td>
                     </tr>
                 @endforeach
