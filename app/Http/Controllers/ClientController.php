@@ -6,11 +6,8 @@ use App\Account;
 use App\Client;
 use App\InvestorTransaction;
 use App\Jobs\InvestorComputation;
-use App\Notifications\TransactionRequest;
-use App\Request;
 use App\SupportTicket;
 use App\Transaction;
-use App\User;
 use Carbon\Carbon;
 use function request;
 
@@ -65,18 +62,8 @@ class ClientController extends Controller
     public function transaction(Client $client)
     {
         if (user()->role == 'admin') {
-            $account = Account::query()->findOrFail(cache('default_wallet'));
             $time = request('date');
-            $ticket = md5($client->email . $time);
-            $client->transactions()->save(new Transaction(['type' => request('operation'), 'account_id' => $account->id, 'amount' => request('amount'), 'item' => 'BTC', 'created_at' => $time, 'ticket' => $ticket]));
-        } else {
-            $time = now();
-            $ticket = request('transaction_id');
-            $req = new Request(['operation' => request('operation'), 'wallet' => request('wallet'), 'amount' => request('amount'), 'status' => 'pending', 'item' => 'BTC', 'created_at' => $time, 'transaction_id' => $ticket]);
-            $client->requests()->save($req);
-            foreach (User::query()->get() as $user) {
-                $user->notify(new TransactionRequest($req));
-            }
+            $client->investorTransactions()->save(new InvestorTransaction(['type' => request('operation'), 'amount' => request('amount'), 'narration' => 'Client ' . request('operation'), 'date' => $time]));
         }
         return redirect(route('client', compact('client')));
     }

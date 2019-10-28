@@ -57,18 +57,7 @@ class DomExtract
                                 $transaction->closed_at = null;
                             }
                         } else if ($transaction->type == 'balance') {
-                            $transaction->size = 0;
-                            $transaction->item = $pieces[3]->text;
-                            $transaction->commission = 0;
-                            $transaction->swap = 0;
-                            $transaction->closed_at = $transaction->opened_at;
-                            $transaction->profit = parse_number($pieces[4]->text);
-                            if ($transaction->profit > 0) {
-                                $transaction->type = 'deposit';
-                            } else {
-                                $transaction->type = 'withdrawal';
-                                $transaction->profit = abs($transaction->profit);
-                            }
+                            continue;
                         }
                         $extract->transactions[] = $transaction;
                     }

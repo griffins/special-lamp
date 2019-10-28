@@ -3,6 +3,16 @@
     <div class="card-header">
         <h3 class="card-title">#{{ $client->name }} (USD - {{currency( normalize( $client->balance),true,0)}}
             )</h3>
+        @if((user()->role =='admin'))
+            <div class="card-options">
+                <button data-toggle="modal" data-target="#transaction" data-type="deposit" class="btn btn-success">
+                    Deposit
+                </button>
+                <button data-toggle="modal" data-target="#transaction" data-type="withdraw"
+                        class="btn btn-primary mx-2">Withdraw
+                </button>
+            </div>
+        @endif
     </div>
     <div class="card-body">
         <div class="row">
@@ -87,4 +97,4 @@
 
         setupInvestor()
     </script>
-@endsection
+@append

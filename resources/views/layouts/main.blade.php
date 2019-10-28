@@ -92,10 +92,6 @@
                                                class="dropdown-item @if(request('section') =='clients') active @endif">
                                                 Clients
                                             </a>
-                                            <a href="#"
-                                               data-toggle="modal" data-target="#mark-transactions"
-                                               title="Transaction Marker"
-                                               class="dropdown-item">Mark Transactions</a>
                                         </div>
                                     </li>
                                     @if(user()->id != 4)
@@ -161,87 +157,6 @@
                 @endif
                 @yield('content')
             </div>
-            <div class="modal fade" id="mark-transactions" tabindex="-1" role="dialog"
-                 aria-labelledby="exampleModalCenterTitle"
-                 aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Unmarked Transactions</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <table class="table table-bordered table-striped">
-                                <thead>
-                                <tr>
-                                    <td>
-                                        <b> Ticket </b>
-                                    </td>
-                                    <td>
-                                        <b> Description</b>
-                                    </td>
-                                    <td>
-                                        <b> Amount</b>
-                                    </td>
-                                    <td>
-                                        <b> Date</b>
-                                    </td>
-                                    <td>
-                                        <b>
-                                            Actions
-                                        </b>
-                                    </td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach(\App\Transaction::query()->pendingTransactions()->orderBy('closed_at')->get() as $transaction)
-                                    <tr>
-                                        <td>
-                                            {{$transaction->ticket}}
-                                        </td>
-                                        <td>
-                                            {{ucfirst(  $transaction->type) }}  {{$transaction->item}}
-                                        </td>
-                                        <td>
-                                            {{ currency( $transaction->profit) }}
-                                        </td>
-                                        <td>
-                                            {{$transaction->closed_at->toDateTimeString()}}
-                                        </td>
-                                        <td>
-                                            <div class="item-action dropdown">
-                                                <a href="javascript:void(0)" data-toggle="dropdown" class="icon"
-                                                   aria-expanded="false"><i
-                                                        class="fe fe-more-vertical"></i></a>
-                                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end"
-                                                     style="position: absolute; transform: translate3d(15px, 20px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                                    @foreach(\App\Client::query()->get() as $investor)
-                                                        <a href="#" data-toggle="modal"
-                                                           data-target="#mark-transaction-to-investor"
-                                                           data-name="{{$investor->name}}"
-                                                           data-investor-id="{{$investor->id}}"
-                                                           data-url="{{ route('mark',compact('investor','transaction')) }}"
-                                                           class="dropdown-item assign"><i
-                                                                class="dropdown-icon text-success fe fe-check-circle"
-                                                                style=""></i>Mark
-                                                            For {{ $investor->name }}</a>
-                                                    @endforeach
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
         <div class="container">
             <footer class="footer text-white">

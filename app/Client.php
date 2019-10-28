@@ -20,7 +20,7 @@ class Client extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'notes', 'status','commission'
+        'name', 'email', 'password', 'notes', 'status', 'commission'
     ];
 
     /**
@@ -51,7 +51,7 @@ class Client extends Authenticatable implements MustVerifyEmail
 
     public function investorTransactions()
     {
-        return $this->hasMany(InvestorTransaction::class);
+        return $this->hasMany(InvestorTransaction::class, 'investor_id');
     }
 
 
@@ -77,7 +77,7 @@ class Client extends Authenticatable implements MustVerifyEmail
 
     public function transactions()
     {
-        return $this->hasMany(InvestorTransaction::class,'investor_id');
+        return $this->hasMany(InvestorTransaction::class, 'investor_id');
     }
 
     public function balanceAt($date)
