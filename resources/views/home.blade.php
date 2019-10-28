@@ -61,6 +61,7 @@
                 <thead>
                 <tr>
                     <td><b>Ticket</b></td>
+                    <td><b>Type</b></td>
                     <td><b>Item</b></td>
                     <td><b>Amount</b></td>
                     <td><b>Date (GMT)</b></td>
@@ -70,6 +71,7 @@
                 @foreach(\App\Transaction::query()->orderByDesc('created_at')->paginate(20) as $interest)
                     <tr>
                         <td><b>{{  $interest->ticket }}                    </b></td>
+                        <td><b>{{ $interest->type }}</b></td>
                         <td><b>{{ $interest->item }}</b></td>
                         <td><b>{{ currency( $interest->profit,true,2) }}</b></td>
                         <td><b>{{ $interest->created_at }}</b></td>
