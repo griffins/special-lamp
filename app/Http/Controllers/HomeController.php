@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Client;
+use App\InvestorTransaction;
 use App\Transaction;
 use App\User;
 use Carbon\Carbon;
@@ -32,7 +33,7 @@ class HomeController extends Controller
                     'end' => now()->endOfYear()],
             ];
             $clients = Client::query();
-            $totalFund = Transaction::query()->balance();
+            $totalFund = InvestorTransaction::query()->balance();
             return view('home', compact('clients', 'totalFund','periods'));
         } else {
             return redirect(route('client', ['client' => user()]));
