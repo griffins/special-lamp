@@ -11,13 +11,13 @@ class InvestorTransaction extends Model
 
     public function scopeProfit($query)
     {
-        return $query->selectRaw("sum( CASE WHEN type = 'withdrawal' THEN 0 - amount ELSE amount END ) as aggregate")->value('aggregate') ?: 0;
+        return $query->selectRaw("sum( CASE WHEN type = 'withdraw' THEN 0 - amount ELSE amount END ) as aggregate")->value('aggregate') ?: 0;
     }
 
     public function scopeBalanceAt(Builder $query, $date)
     {
         return ($query->where('date', '<=', $date)
-            ->selectRaw("sum( CASE WHEN type = 'withdrawal' THEN 0 - amount ELSE amount END ) as aggregate")->value('aggregate')) ?: 0;
+            ->selectRaw("sum( CASE WHEN type = 'withdraw' THEN 0 - amount ELSE amount END ) as aggregate")->value('aggregate')) ?: 0;
     }
 
     public function scopeBalance(Builder $query)
