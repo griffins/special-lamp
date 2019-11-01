@@ -15,7 +15,6 @@ class Account extends Model
 
     public static function importFromExtract(DomExtract $extract)
     {
-
         self::import($extract);
         dispatch(new InvestorComputation());
     }

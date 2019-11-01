@@ -53,7 +53,7 @@
                         <td><b>{{ ucfirst( $transaction->type)}}</b></td>
                         <td><b>{{ $transaction->narration }}</b></td>
                         <td><b>{{ currency($transaction->amount,true,2) }}</b></td>
-                        <td><b>{{ $transaction->created_at }}</b></td>
+                        <td><b>{{ $transaction->date }}</b></td>
                     </tr>
                 @endforeach
                 </tbody>

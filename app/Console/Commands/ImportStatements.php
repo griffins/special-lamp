@@ -39,7 +39,7 @@ class ImportStatements extends Command
     public function handle()
     {
         $dir = env("FTP_DIR");
-        $files = files_in_dir($dir, ["htm", "html"]);
+        $files = files_in_dir($dir, ["htm"]);
         foreach ($files as $file) {
             try {
                 DomExtract::process($file);
