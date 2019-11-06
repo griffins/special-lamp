@@ -52,7 +52,7 @@ class Account extends Model
     public function import(DomExtract $extract)
     {
         foreach ($extract->transactions as $transaction) {
-            $transaction->account_id = $extract->account->id;
+            $transaction->account_id = $this->id;
             Transaction::fromExtract($transaction);
         }
     }
