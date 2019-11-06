@@ -31,8 +31,8 @@ class InvestorComputation implements ShouldQueue
                     $balance = $investor->balanceAt($transaction->opened_at);
                     $bal = InvestorTransaction::query()->balanceAt($transaction->opened_at);
                     if ($bal !== 0 && $balance !== 0) {
-                        $profit = ((100 - $investor->commission) / 100) * ($transaction->profit + $transaction->swap + $transaction->commission) * ($balance / $bal);
-                        $profit2 = ($investor->commission / 100) * ($transaction->profit + $transaction->swap + $transaction->commission) * ($balance / $bal);
+                        $profit2 = ((100 - $investor->commission) / 100) * ($transaction->profit + $transaction->swap + $transaction->commission) * ($balance / $bal);
+                        $profit = ($investor->commission / 100) * ($transaction->profit + $transaction->swap + $transaction->commission) * ($balance / $bal);
                         if ($profit != 0) {
                             $t = new InvestorTransaction([
                                 'transaction_id' => $transaction->id,
