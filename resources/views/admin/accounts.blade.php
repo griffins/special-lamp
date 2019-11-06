@@ -26,7 +26,7 @@
         <form action="{{ route('support',['section' => 'accounts','action' => request('action')]) }}" method="post">
             @csrf
             <br>
-            <input name="account" value="{{ $account->id }}" type="hidden">
+            <input name="account_id" value="{{ $account->id }}" type="hidden">
             <div class="row">
                 <div class="col-4">
                     <label>Name</label>
@@ -40,64 +40,18 @@
                     @endif
                 </div>
                 <div class="col-4">
-                    <label>Email</label>
-                    <input type="text" name="email" value="{{ old('email',$account->email) }}"
+                    <label>Account Number</label>
+                    <input type="text" name="account" value="{{ old('account',$account->account) }}"
                            class="form-control"
-                           placeholder="Email">
-                    @if ($errors->has('email'))
+                           placeholder="Account">
+                    @if ($errors->has('account'))
                         <span class="invalid-feedback d-block" role="alert">
-                            <strong>{{ $errors->first('email') }}</strong>
+                            <strong>{{ $errors->first('account') }}</strong>
                         </span>
                     @endif
                 </div>
             </div>
             <br>
-            <div class="row">
-                <div class="col-4">
-                    <label>Password</label>
-                    <input type="text" name="password" value="{{ old('password',$account->password) }}"
-                           class="form-control"
-                           placeholder="password for email account">
-                    @if ($errors->has('password'))
-                        <span class="invalid-feedback d-block" role="alert">
-                            <strong>{{ $errors->first('password') }}</strong>
-                        </span>
-                    @endif
-                </div>
-            </div>
-            <br>
-            <div class="row">
-                @if($account->exists)
-                    <div class="col-4">
-                        <label>Wallet Address QR</label>
-                        <div class="card card-profile">
-                            <div class="card-body text-center">
-                    <span class="img rounded-0 avatar "
-                          style="background-image: url({{ $account->photo }});width:200px; height:200px">
-  <a href="javascript:void(0)" onclick="changeProfile()" class="avatar-status fe fe-camera"
-     style="background: transparent; font-size: 16px;text-decoration: none">
-  </a>
-
-</span>
-
-
-                            </div>
-                        </div>
-                    </div>
-                @endif
-                <div class="col-4">
-                    <label>Wallet Address</label>
-                    <input type="text" name="wallet" value="{{ old('wallet',$account->wallet) }}"
-                           class="form-control"
-                           placeholder="wallet for account">
-                    @if ($errors->has('wallet'))
-                        <span class="invalid-feedback d-block" role="alert">
-                            <strong>{{ $errors->first('wallet') }}</strong>
-                        </span>
-                    @endif
-                </div>
-            </div>
-
             <div class="row mt-3">
                 <div class="col-3">
                     <button class="btn btn-outline-primary">Submit Details</button>
@@ -111,27 +65,17 @@
             </div>
         </form>
         <form id="delete-form"
-              action="{{ route('support',['section' => 'accounts','action' => 'delete','client' => $account]) }}"
+              action="{{ route('support',['section' => 'accounts','action' => 'delete','account_id' => $account]) }}"
               method="POST">
             @csrf
         </form>
-        <form method="post" id="wallet-form"
-              action="{{ route('support',['section' =>'accountQr','account' => $account]) }}"
-              enctype="multipart/form-data">
-            @csrf
-            <input name="image" id="profile" type="file" style="display: none"
-                   accept="image/png, image/jpeg">
-        </form>
     @else
-        <div class="s">
-
-        </div>
         <table class="table table-striped mt-3">
             <thead>
             <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>Email</th>
+                <th>Account</th>
                 <th class="text-left">Created</th>
                 <th class=""></th>
             </tr>
@@ -140,8 +84,8 @@
             @foreach($accounts as $k => $account)
                 <tr>
                     <td>{{ $k+1 }}</td>
-                    <td>@if(cache('default_wallet') == $account->id) <i style="font-size: larger;font-weight: bolder"  class=" text-danger fe fe-check-circle"></i>@endif  {{$account->name}}</td>
-                    <td>{{$account->email}}</td>
+                    <td>{{$account->name}}</td>
+                    <td>{{$account->account}}</td>
                     <td class="text-left">{{$account->created_at->format('jS M, Y')}}</td>
                     <td>
                         <div class="item-action dropdown">
@@ -150,14 +94,9 @@
                             <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end"
                                  style="position: absolute; transform: translate3d(15px, 20px, 0px); top: 0px; left: 0px; will-change: transform;">
                                 @if(user()->id!=4)
-                                    <a href="{{ route('support',['action' => 'edit','section' => 'accounts','account' => $account]) }}"
+                                    <a href="{{ route('support',['action' => 'edit','section' => 'accounts','account_id' => $account]) }}"
                                        class="dropdown-item"><i class="dropdown-icon fe fe-edit-2">
-
                                         </i> Edit Account </a>
-                                    <a href="{{ route('support',['action' => 'default','section' => 'accounts','account' => $account]) }}"
-                                       class="dropdown-item"><i class="dropdown-icon fe fe-check-circle">
-
-                                        </i> Set Default Wallet </a>
                                 @endif
                             </div>
                         </div>

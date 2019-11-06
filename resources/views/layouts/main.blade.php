@@ -88,10 +88,15 @@
                                                     Administrators
                                                 </a>
                                             @endif
+                                            <a href="{{ route('support',['section' => 'accounts']) }}"
+                                               class="dropdown-item @if(request('section') =='accounts') active @endif">
+                                                Accounts
+                                            </a>
                                             <a href="{{route('support',['section' => 'clients'])}}"
                                                class="dropdown-item @if(request('section') =='clients') active @endif">
                                                 Clients
                                             </a>
+
                                         </div>
                                     </li>
                                     @if(user()->id != 4)

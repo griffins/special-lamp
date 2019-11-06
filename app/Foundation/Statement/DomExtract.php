@@ -23,13 +23,13 @@ class DomExtract
 
     public static function process($file)
     {
-        ini_set('memory_limit','1024M');
+        ini_set('memory_limit', '1024M');
         $extract = new static();
         $dom = new Dom;
         $dom->loadFromFile($file);
         $rows = $dom->find('tr');
         $extract->account = explode(" ", $rows[0]->find('td > b')[0]->text)[1];
-        if ($extract->account == env('APP_ACCOUNT')) {
+        if (Account::query()->where('account', $extract->account)->exists()) {
             $extract->currency = explode(" ", $rows[0]->find('td > b')[2]->text)[1];
             $extract->balance = parse_number($rows[count($rows) - 1]->find('td > b')[1]->text);
             $extract->equity = parse_number($rows[count($rows) - 1]->find('td > b')[3]->text);

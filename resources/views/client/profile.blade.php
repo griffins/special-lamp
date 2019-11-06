@@ -118,6 +118,14 @@
                                 <label class="col-form-label">Amount:</label>
                                 <input type="number" name="amount" step="0.00000001" class="form-control">
                             </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Account:</label>
+                                <select class="form-control" name="account_id">
+                                    @foreach(\App\Account::all() as $account)
+                                        <option value="{{ $account->id }}">{{$account->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
 
                             <div class="form-group">
                                 {{ date_picker('Date','date', now()->toDateTimeString()) }}
@@ -146,6 +154,7 @@
             e.preventDefault();
             return false;
         });
+
         function performTransaction() {
             $('#transaction').on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget);
@@ -160,6 +169,7 @@
                 modal.find('.modal-content input[name=operation]').val(operation);
             })
         }
+
         performTransaction()
     </script>
 @append

@@ -41,14 +41,55 @@ class SupportController extends Controller
         switch ($action) {
             case 'users':
                 return $this->users();
-            case 'accountQr':
-                return $this->accountQr();
+            case 'accounts':
+                return $this->accountBox();
             case 'requests':
                 return $this->requests();
             case 'clients':
                 return $this->accounts();
             default:
                 return redirect(route('support', ['section' => 'users']));
+        }
+    }
+    private function accountBox()
+    {
+        $account = Account::query()->findOrNew(request('account_id'));
+        if (request()->isMethod('post')) {
+            if (request('action') == 'delete') {
+                $account->delete();
+                $message = 'Deleted';
+            } else {
+                $rules = [
+                    'name' => 'required',
+                    'account' => 'required',
+                ];
+
+                request()->validate($rules);
+
+                DB::beginTransaction();
+                $account->fill(request()->only('name', 'account'));
+                $account->save();
+
+
+                if ($account->wasRecentlyCreated) {
+                    $message = sprintf('Account [%s] has been created.', $account->name);
+                } else {
+                    $message = sprintf('Account [%s] has been updated.', $account->name);
+                }
+
+                DB::commit();
+            }
+            return redirect(route('support', ['section' => 'accounts']))->with('message', $message);
+        } else if (request()->isMethod('GET')) {
+            if (request('action') == 'edit') {
+                return view('admin/accounts', compact('account'));
+            } else {
+                if (request('action') == 'default') {
+                    cache()->forever('default_wallet', $account->id);
+                }
+                $accounts = Account::query()->get();
+                return view('admin/accounts', compact('accounts', 'account'));
+            }
         }
     }
 
@@ -129,6 +170,7 @@ class SupportController extends Controller
             }
         }
     }
+
 
     private function accounts()
     {

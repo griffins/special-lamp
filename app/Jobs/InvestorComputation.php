@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Account;
 use App\Client;
 use App\InvestorTransaction;
 use App\Transaction;
@@ -14,6 +15,12 @@ use Illuminate\Queue\SerializesModels;
 class InvestorComputation implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    public $account;
+
+    public function __construct($id)
+    {
+        $this->account = $id;
+    }
 
     /**
      * Execute the job.
@@ -23,16 +30,18 @@ class InvestorComputation implements ShouldQueue
     public function handle()
     {
         $investors = Client::query()->get();
+        $account = Account::query()->find($this->account);
         \DB::beginTransaction();
-        InvestorTransaction::query()->where('type', 'profit')->delete();
-        foreach (Transaction::query()->whereIn('type', ['sell', 'buy'])->whereNotNull('closed_at')->orderBy('closed_at', 'asc')->cursor(0) as $transaction) {
+        $account->investorTransactions()->where('type', 'profit')->delete();
+        foreach ($account->transactions()->whereIn('type', ['sell', 'buy'])->whereNotNull('closed_at')->orderBy('closed_at', 'asc')->cursor(0) as $transaction) {
             foreach ($investors as $investor) {
                 if (!$investor->investorTransactions()->where('transaction_id', $transaction->id)->exists()) {
-                    $balance = $investor->balanceAt($transaction->opened_at);
-                    $bal = InvestorTransaction::query()->balanceAt($transaction->opened_at);
-                    if ($bal !== 0 && $balance !== 0) {
-                        $profit2 = ((100 - $investor->commission) / 100) * ($transaction->profit + $transaction->swap + $transaction->commission) * ($balance / $bal);
-                        $profit = ($investor->commission / 100) * ($transaction->profit + $transaction->swap + $transaction->commission) * ($balance / $bal);
+                    $balance = $investor->depositAt($transaction->opened_at);
+                    $ratio = $investor->depositAt($transaction->opened_at) / 1000;
+                    $amount = ($transaction->profit + $transaction->swap + $transaction->commission) * 0.7;
+                    if ($balance !== 0) {
+                        $profit2 = ((100 - $investor->commission) / 100) * $amount * $ratio;
+                        $profit = ($investor->commission / 100) * $amount * $ratio;
                         if ($profit != 0) {
                             $t = new InvestorTransaction([
                                 'transaction_id' => $transaction->id,
@@ -44,7 +53,7 @@ class InvestorComputation implements ShouldQueue
                             ]);
                             $t->save();
                         }
-                        if ($profit2 > 0) {
+                        if ($profit2 != 0) {
                             $t = new InvestorTransaction([
                                 'transaction_id' => $transaction->id,
                                 'investor_id' => Client::query()->first()->id,

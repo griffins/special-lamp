@@ -149,7 +149,7 @@
                         <div class="avatar d-block" style="background-image: url({{ $client->photo }})">
                         </div>
                     </td>
-                    <td><a href="{{ route('client', compact('client')) }}"> {{$client->name}}</a></td>
+                    <td><a data-turbolinks="false" href="{{ route('client', compact('client')) }}"> {{$client->name}}</a></td>
                     <td>{{$client->email}}</td>
                     <td>{{currency( $client->commission)}}</td>
                     <td class="text-left">{{$client->created_at->format('jS M, Y')}}</td>

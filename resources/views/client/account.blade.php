@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card-status bg-teal"></div>
     <div class="card-header">
-        <h3 class="card-title">#{{ $client->name }} (USD - {{currency( normalize( $client->balance),true,0)}}
+        <h3 class="card-title">#{{ $client->name }} (USD - {{currency( normalize( $client->balance),true,2)}}
             )</h3>
         @if((user()->role =='admin'))
             <div class="card-options">
@@ -20,7 +20,7 @@
                 <div class="col-4">
                     <div class="card">
                         <div class="card-body">
-                            <h3 class="mb-1">{{ currency( normalize( $client->transactions()->where('type','profit')->whereBetween('date',[$period->start,$period->end])->profit()),true,0,false) }}</h3>
+                            <h3 class="mb-1">{{ currency( normalize( $client->transactions()->where('type','profit')->whereBetween('date',[$period->start,$period->end])->profit()),true,2,false) }}</h3>
                             <div class="text-muted" title="{{ date_range($period->start,$period->end) }}">Profit
                                 ({{ $period->name }})
                             </div>
@@ -28,11 +28,23 @@
                     </div>
                 </div>
             @endforeach
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="text-muted" title="Deposits">
+                            Deposits &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{{ currency( $client->transactions()->deposits(),true,2,false) }}</b>
+                        </div>
+                        <div class="text-muted mt-2" title="Deposits">
+                            Withdrawals <b>{{ currency( $client->transactions()->withdrawals(),true,2,false) }}</b>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         @php $transactions = $client->transactions()->orderByDesc('created_at')->paginate(); @endphp
         @if($transactions->count()>0)
             <h5 id="transactions">Recent Transactions</h5>
-            <table class="table table-striped" >
+            <table class="table table-striped">
                 <thead>
                 <tr>
                     <td><b>ID</b></td>

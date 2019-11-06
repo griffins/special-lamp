@@ -19,4 +19,5 @@ class TransactionExtract
     public $commission;
     public $swap;
     public $profit;
+    public $account_id;
 }

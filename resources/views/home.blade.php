@@ -74,7 +74,7 @@
                         <td><b>{{ $interest->type }}</b></td>
                         <td><b>{{ $interest->item }}</b></td>
                         <td><b>{{ currency( $interest->profit,true,2) }}</b></td>
-                        <td><b>{{ $interest->created_at }}</b></td>
+                        <td><b>{{ $interest->closed_at }}</b></td>
                     </tr>
                 @endforeach
                 </tbody>

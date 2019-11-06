@@ -63,7 +63,7 @@ class ClientController extends Controller
     {
         if (user()->role == 'admin') {
             $time = request('date');
-            $client->investorTransactions()->save(new InvestorTransaction(['type' => request('operation'), 'amount' => request('amount'), 'narration' => 'Client ' . request('operation'), 'date' => $time]));
+            $client->investorTransactions()->save(new InvestorTransaction(['type' => request('operation'), 'amount' => request('amount'), 'account_id' => request('account_id'), 'narration' => 'Client ' . request('operation'), 'date' => $time]));
         }
         return redirect(route('client', compact('client')));
     }

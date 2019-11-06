@@ -87,6 +87,14 @@ class Client extends Authenticatable implements MustVerifyEmail
             ->selectRaw("sum( CASE WHEN type = 'withdraw' THEN 0 - amount ELSE amount END ) as aggregate")->value('aggregate')) ?: 0;
     }
 
+
+    public function depositAt($date)
+    {
+        return ($this->transactions()->where('date', '<=', $date)
+            ->where('type', 'deposit')
+            ->selectRaw("sum( amount ) as aggregate")->value('aggregate')) ?: 0;
+    }
+
     public function tickets()
     {
         return $this->hasMany(SupportTicket::class);

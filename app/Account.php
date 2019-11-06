@@ -15,8 +15,11 @@ class Account extends Model
 
     public static function importFromExtract(DomExtract $extract)
     {
-        self::import($extract);
-        dispatch(new InvestorComputation());
+        $static = static::query()->where('account', $extract->account)->first();
+        if ($static) {
+            $static->import($extract);
+            dispatch(new InvestorComputation($static->id));
+        }
     }
 
     public function pendingTransactions()
@@ -46,9 +49,10 @@ class Account extends Model
         return user()->club == '*' ? $query : $query->whereIn('server_id', Server::query()->where('name', 'regexp', sprintf("^(P)"))->pluck('id'));
     }
 
-    public static function import(DomExtract $extract)
+    public function import(DomExtract $extract)
     {
         foreach ($extract->transactions as $transaction) {
+            $transaction->account_id = $extract->account->id;
             Transaction::fromExtract($transaction);
         }
     }
