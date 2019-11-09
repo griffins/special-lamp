@@ -8,7 +8,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class TransactionRejected extends Notification
+class AccountRejected extends Notification
 {
     use Queueable;
 
@@ -46,14 +46,12 @@ class TransactionRejected extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->line(sprintf('Howdy %s, your %s transaction of %s %s has been rejected, Reason: %s',
+            ->line(sprintf('Howdy %s, your %s account has been rejected, Reason: %s',
                 explode(' ', $notifiable->name)[0],
-                $this->request->type,
-                currency($this->request->amount, true, 8),
-                $this->request->item,
+                config('app.name'),
                 $this->reason))
-                ->action(sprintf('Go to %s', config('app.name')), url('/'))
-                ->line(sprintf('Thank you for using %s!', config('app.name')));
+            ->action(sprintf('Go to %s', config('app.name')), url('/'))
+            ->line(sprintf('Thank you for using %s!', config('app.name')));
     }
 
 

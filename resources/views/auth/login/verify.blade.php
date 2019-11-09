@@ -27,9 +27,9 @@
                         </div>
                     </div>
                 </form>
-{{--                <div class="text-center text-muted">--}}
-{{--                    Don't have account yet? <a href="{{ route('register') }}">Sign up</a>--}}
-{{--                </div>--}}
+                <div class="text-center">
+                    <a href="{{ route('register') }}" style="color:blue">  Don't have account yet? Sign up</a>
+                </div>
             </div>
         </div>
     </div>

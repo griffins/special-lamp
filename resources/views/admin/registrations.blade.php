@@ -1,61 +1,96 @@
 @extends('admin.page')
 @section('card-title')
-    Transaction Requests
-@endsection
-@section('card-options')
-    @if(request('action') == 'listing' || request('action') =='create' || request('action') =='edit')
-        <a href="{{ route('support',['section' => 'users']) }}"
-           class="btn btn-outline-primary btn-sm">
-            Back
-        </a>
-    @endif
+    Registration Requests
 @endsection
 @section('page')
-    <table class="table table-striped mt-3">
-        <thead>
-        <tr>
-            <th class="w-1"></th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Type</th>
-            <th>Amount</th>
-            <th class="text-left">Date</th>
-            <th class=""></th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach($requests as $request)
-            <tr>
-                <td class="text-center">
-                    <div class="avatar d-block" style="background-image: url({{ $request->client->photo }})">
+    @foreach($registrations as $request)
+        <div class="card card-aside col-12">
+            <a href="#" class="card-aside-column w-50"
+               style="background-image: url({{ $request->selfieProof->link }})"></a>
+            <div class="card-body d-flex flex-column">
+                <table class="table table-striped">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <b> Applicant </b>
+                        </td>
+                        <td>
+                            {{ $request->name }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b> Email </b>
+                        </td>
+                        <td>
+                            {{ $request->email }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b> Phone </b>
+                        </td>
+                        <td>
+                            {{ $request->phone }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b> {{$request->id_type}} </b>
+                        </td>
+                        <td>
+                            {{ $request->id_number }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b> Address </b>
+                        </td>
+                        <td>
+                            {{ $request->residential_address }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b> Referee </b>
+                        </td>
+                        <td>
+                            {{ $request->referee }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b> Proof of Address </b>
+                        </td>
+                        <td>
+                            <a target="_blank" href="{{ $request->addressProof->link }}">View</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b> Proof of Identity </b>
+                        </td>
+                        <td>
+                            <a target="_blank" href="{{ $request->idNumberProof->link }}">View</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="d-flex align-items-center pt-5 mt-auto">
+                    <div class="ml-auto text-muted">
+                        <a
+                            href="{{ route('support',['action' => 'reject','section' => 'requests','request' => $request]) }}"
+                            class="d-md-inline-block"><i class="dropdown-icon fe fe-trash"></i> Reject </a>
+
+                        <a href="{{ route('support',['action' => 'confirm','section' => 'requests','request' => $request]) }}"
+                           class="ml-3 d-md-inline-block"><i class="dropdown-icon fe fe-check-circle"></i>
+                            Confirm
+                        </a>
                     </div>
-                </td>
-                <td><a href="{{ route('client', ['client' => $request->client]) }}"> {{$request->client->name}}</a></td>
-                <td>{{$request->client->email}}</td>
-                <td>{{ ucfirst( $request->operation) }}</td>
-                <td>{{currency( $request->amount,true,8)}}</td>
-                <td class="text-left">{{$request->created_at->diffForHumans()}}</td>
-                <td>
-                    <div class="item-action dropdown">
-                        <a href="javascript:void(0)" data-toggle="dropdown" class="icon" aria-expanded="false"><i
-                                    class="fe fe-more-vertical"></i></a>
-                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end"
-                             style="position: absolute; transform: translate3d(15px, 20px, 0px); top: 0px; left: 0px; will-change: transform;">
-                            <a data-name="{{$request->client->name}}" data-email="{{$request->client->email}}"
-                               href="#" data-toggle="modal" data-target="#reject"
-                               data-url="{{ route('support',['action' => 'reject','section' => 'requests','client' => $request->client,'request' => $request]) }}"
-                               class="dropdown-item"><i class="dropdown-icon fe fe-trash"></i> Reject </a>
-                            <a href="#" data-toggle="modal" data-target="#confirm"
-                               data-name="{{$request->client->name}}" data-amount="{{$request->amount}}" data-wallet="{{$request->wallet}}" data-type="{{ ucfirst( $request->operation) }}" data-txn="{{$request->transaction_id}}"
-                               data-url="{{ route('support',['action' => 'confirm','section' => 'requests','client' => $request->client,'request' => $request]) }}"
-                               class="dropdown-item"><i class="dropdown-icon fe fe-check-circle"></i> Confirm </a>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        @endforeach
-        </tbody>
-    </table>
+                </div>
+            </div>
+        </div>
+    @endforeach
     <div class="modal fade" id="reject" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
          aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -126,7 +161,6 @@
             </div>
         </div>
     </div>
-
 @endsection
 
 @section('scripts')

@@ -15,4 +15,5 @@
             @yield('page')
         </div>
     </div>
+    @yield('other')
 @endsection

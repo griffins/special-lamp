@@ -11,8 +11,8 @@ use App\Notifications\AccountConfirmation;
 use App\Notifications\AccountPasswordReset;
 use App\Notifications\AdminNomination;
 use App\Notifications\PendingInvoice;
-use App\Notifications\TransactionConfirmation;
-use App\Notifications\TransactionRejected;
+use App\Notifications\AccountRejected;
+use App\Registration;
 use App\Request;
 use App\Server;
 use App\User;
@@ -51,6 +51,7 @@ class SupportController extends Controller
                 return redirect(route('support', ['section' => 'users']));
         }
     }
+
     private function accountBox()
     {
         $account = Account::query()->findOrNew(request('account_id'));
@@ -146,28 +147,25 @@ class SupportController extends Controller
 
     private function requests()
     {
-        $request = Request::query()->findOrNew(request('request'));
-        if (request()->isMethod('post')) {
-            if (request('action') == 'reject') {
-                $request->status = 'rejected';
-                $request->save();
-                $message = 'Deleted';
-                $request->client->notify(new TransactionRejected($request, request('reason')));
-            } else {
-                DB::beginTransaction();
-                $transaction = $request->apply(request('amount'), request('date'));
-                $message = sprintf('Request [%s] has been updated.', $request->name);
-                $request->client->notify(new TransactionConfirmation($transaction));
-                DB::commit();
+        $registration = Registration::query()->findOrNew(request('request'));
+        if (request()->isMethod('GET')) {
+            if (request()->has('action')) {
+                if (request('action') == 'reject') {
+                    $registration->status = 'rejected';
+                    $registration->save();
+                    $message = 'Deleted';
+                    $registration->notify(new AccountRejected($registration, 'incomplete details'));
+                } else {
+                    DB::beginTransaction();
+                    $transaction = $registration->apply();
+                    $message = sprintf('Request [%s] has been updated.', $registration->name);
+                    $registration->notify(new AccountConfirmation($transaction));
+                    DB::commit();
+                }
+                return redirect(route('support', ['section' => 'requests']))->with('message', $message);
             }
-            return redirect(route('support', ['section' => 'requests']))->with('message', $message);
-        } else if (request()->isMethod('GET')) {
-            if (request('action') == 'edit') {
-                return view('admin/transactions', compact('requests'));
-            } else {
-                $requests = Request::query()->where('status', 'pending')->get();
-                return view('admin/transactions', compact('requests'));
-            }
+            $registrations = Registration::query()->where('status', 'pending')->get();
+            return view('admin/registrations', compact('registrations'));
         }
     }
 
