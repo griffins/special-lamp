@@ -160,6 +160,8 @@ class SupportController extends Controller
                     $transaction = $registration->apply();
                     $message = sprintf('Request [%s] has been updated.', $registration->name);
                     $registration->notify(new AccountConfirmation($transaction));
+                    $registration->status = 'approved';
+                    $registration->save();
                     DB::commit();
                 }
                 return redirect(route('support', ['section' => 'requests']))->with('message', $message);
