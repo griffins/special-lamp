@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\File;
+use App\Notifications\RegistrationRequest;
 use App\Registration;
 use App\User;
 use App\Http\Controllers\Controller;
@@ -87,6 +88,9 @@ class RegisterController extends Controller
         $registration->idNumberProof()->associate(File::from($data['photo_id'], 'files'));
         $registration->save();
         \DB::commit();
+        foreach (User::query()->get() as $user) {
+            $user->notify(new RegistrationRequest($registration));
+        }
         return $registration;
     }
 
