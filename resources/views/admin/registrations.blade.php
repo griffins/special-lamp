@@ -1,6 +1,36 @@
 @extends('admin.page')
 @section('card-title')
-    Registration Requests
+    Registration Requests ({{ ucfirst(request('status','pending')) }})
+@endsection
+@section('card-options')
+    @if(request('status') == 'approved')
+        <a href="{{ route('support',['section' => 'requests']) }}"
+           class="btn btn-outline-primary btn-sm mr-2">
+            Pending
+        </a>
+        <a href="{{ route('support',['section' => 'requests','status' =>'rejected']) }}"
+           class="btn btn-outline-primary btn-sm">
+            Rejected
+        </a>
+    @elseif(request('status') == 'rejected')
+        <a href="{{ route('support',['section' => 'requests']) }}"
+           class="btn btn-outline-primary btn-sm mr-2">
+            Pending
+        </a>
+        <a href="{{ route('support',['section' => 'requests','status' =>'approved']) }}"
+           class="btn btn-outline-primary btn-sm btn-success">
+            Approved
+        </a>
+    @elseif(request('status','pending') == 'pending')
+        <a href="{{ route('support',['section' => 'requests','status' =>'rejected']) }}"
+           class="btn btn-outline-primary btn-sm mr-2">
+            Rejected
+        </a>
+        <a href="{{ route('support',['section' => 'requests','status' =>'approved']) }}"
+           class="btn btn-outline-primary btn-sm btn-success">
+            Approved
+        </a>
+    @endif
 @endsection
 @section('page')
     @foreach($registrations as $request)

@@ -166,7 +166,7 @@ class SupportController extends Controller
                 }
                 return redirect(route('support', ['section' => 'requests']))->with('message', $message);
             }
-            $registrations = Registration::query()->where('status', 'pending')->get();
+            $registrations = Registration::query()->where('status', request('status', 'pending'))->get();
             return view('admin/registrations', compact('registrations'));
         }
     }
