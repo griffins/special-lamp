@@ -34,7 +34,7 @@ class HomeController extends Controller
             ];
             $clients = Client::query();
             $totalFund = InvestorTransaction::query()->balance();
-            $deposits = InvestorTransaction::query()->deposits();
+            $deposits = InvestorTransaction::query()->deposits() - InvestorTransaction::query()->withdrawals() ;
             return view('home', compact('clients', 'deposits', 'totalFund', 'periods'));
         } else {
             return redirect(route('client', ['client' => user()]));
