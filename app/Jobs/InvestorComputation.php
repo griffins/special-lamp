@@ -32,7 +32,7 @@ class InvestorComputation implements ShouldQueue
         $investors = Client::query()->get();
         $account = Account::query()->find($this->account);
         \DB::beginTransaction();
-        $account->investorTransactions()->where('type', 'profit')->delete();
+        $account->investorTransactions()->whereIn('type', ['profit', 'buy', 'sell'])->delete();
         foreach ($account->transactions()->whereIn('type', ['sell', 'buy'])->whereNotNull('closed_at')->orderBy('closed_at', 'asc')->cursor(0) as $transaction) {
             foreach ($investors as $investor) {
                 if (!$investor->investorTransactions()->where('transaction_id', $transaction->id)->exists()) {
@@ -47,8 +47,8 @@ class InvestorComputation implements ShouldQueue
                                 'transaction_id' => $transaction->id,
                                 'investor_id' => $investor->id,
                                 'amount' => $profit,
-                                'narration' => 'P/L-' . $transaction->ticket,
-                                'type' => 'profit',
+                                'narration' => $transaction->type,
+                                'type' => $transaction->item,
                                 'date' => $transaction->closed_at,
                             ]);
                             $t->save();
@@ -58,8 +58,8 @@ class InvestorComputation implements ShouldQueue
                                 'transaction_id' => $transaction->id,
                                 'investor_id' => Client::query()->first()->id,
                                 'amount' => $profit2,
-                                'narration' => 'P/L-' . $transaction->ticket,
-                                'type' => 'profit',
+                                'narration' => $transaction->type,
+                                'type' => $transaction->item,
                                 'date' => $transaction->closed_at,
                             ]);
                             $t->save();
