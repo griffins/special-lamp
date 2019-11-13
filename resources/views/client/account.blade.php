@@ -32,7 +32,8 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="text-muted" title="Deposits">
-                            Deposits &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{{ currency( $client->transactions()->deposits(),true,2,false) }}</b>
+                            Deposits
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{{ currency( $client->transactions()->deposits(),true,2,false) }}</b>
                         </div>
                         <div class="text-muted mt-2" title="Deposits">
                             Withdrawals <b>{{ currency( $client->transactions()->withdrawals(),true,2,false) }}</b>
@@ -62,8 +63,8 @@
                                 <div class="wrap"> {{ strtoupper(($transaction->id)) }}</div>
                             </b>
                         </td>
-                        <td><b>{{ ucfirst( $transaction->type)}}</b></td>
-                        <td><b>{{ $transaction->narration }}</b></td>
+                        <td><b>{{ strtoupper( $transaction->type)}}</b></td>
+                        <td><b>{{ strtoupper( $transaction->narration) }}</b></td>
                         <td><b>{{ currency($transaction->amount,true,2) }}</b></td>
                         <td><b>{{ $transaction->date }}</b></td>
                     </tr>
