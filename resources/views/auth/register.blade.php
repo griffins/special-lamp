@@ -75,7 +75,7 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label for="email"
-                                           class="col-form-label">{{ __('Referee') }}</label>
+                                           class="col-form-label">{{ __('Referee') }} (Name of person that referred you)</label>
                                     <input id="phone" type="text"
                                            class="form-control{{ $errors->has('referee') ? ' is-invalid' : '' }}"
                                            name="referee" value="{{ old('referee') }}" required>
