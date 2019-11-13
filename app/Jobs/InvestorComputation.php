@@ -47,8 +47,8 @@ class InvestorComputation implements ShouldQueue
                                 'transaction_id' => $transaction->id,
                                 'investor_id' => $investor->id,
                                 'amount' => $profit,
-                                'narration' => $transaction->type,
-                                'type' => $transaction->item,
+                                'narration' => $transaction->item,
+                                'type' => $transaction->type,
                                 'date' => $transaction->closed_at,
                             ]);
                             $t->save();
@@ -58,8 +58,8 @@ class InvestorComputation implements ShouldQueue
                                 'transaction_id' => $transaction->id,
                                 'investor_id' => Client::query()->first()->id,
                                 'amount' => $profit2,
-                                'narration' => $transaction->type,
-                                'type' => $transaction->item,
+                                'narration' => $transaction->item,
+                                'type' => $transaction->type,
                                 'date' => $transaction->closed_at,
                             ]);
                             $t->save();
