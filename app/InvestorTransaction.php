@@ -14,6 +14,12 @@ class InvestorTransaction extends Model
         return $query->selectRaw("sum( CASE WHEN type = 'withdraw' THEN 0 - amount ELSE amount END ) as aggregate")->value('aggregate') ?: 0;
     }
 
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
+    }
+
+
     public function scopeDeposits($query)
     {
         return $query->where('type', 'deposit')->selectRaw("sum( amount ) as aggregate")->value('aggregate') ?: 0;
