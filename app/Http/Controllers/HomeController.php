@@ -27,14 +27,15 @@ class HomeController extends Controller
                     'name' => 'Today',
                     'start' => now()->startOfDay(),
                     'end' => now()->endOfDay()],
-                (object)[
-                    'name' => 'Total Profits',
-                    'start' => Carbon::parse('first day of august 2019'),
-                    'end' => now()->endOfYear()],
+//                (object)[
+//                    'name' => 'Total Profits',
+//                    'start' => Carbon::parse('first day of august 2019'),
+//                    'end' => now()->endOfYear()],
             ];
             $clients = Client::query();
             $totalFund = InvestorTransaction::query()->balance();
-            return view('home', compact('clients', 'totalFund','periods'));
+            $deposits = InvestorTransaction::query()->deposits();
+            return view('home', compact('clients', 'deposits', 'totalFund', 'periods'));
         } else {
             return redirect(route('client', ['client' => user()]));
         }

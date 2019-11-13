@@ -171,7 +171,6 @@ class SupportController extends Controller
         }
     }
 
-
     private function accounts()
     {
         $countries = collect((new ISO3166())->all())->map(function ($e) {

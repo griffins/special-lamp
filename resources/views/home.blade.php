@@ -55,6 +55,19 @@
                         </div>
                     </td>
             @endforeach
+                <td colspan="2">
+                    <div class="card">
+                        <div class="card-body p-3 text-center">
+                            <div class="text-right">
+                                &nbsp;&nbsp;USD
+                            </div>
+
+                            <div class="h1 m-0">{{ currency($deposits,true,2,!true) }}</div>
+                            <div class="text-muted mb-4"> Total Deposits </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
         </table>
         <div class="card mx-3">
             <table class="table table-striped">
