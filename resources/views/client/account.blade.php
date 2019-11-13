@@ -20,7 +20,7 @@
                 <div class="col-4">
                     <div class="card">
                         <div class="card-body">
-                            <h3 class="mb-1">{{ currency( normalize( $client->transactions()->where('type','profit')->whereBetween('date',[$period->start,$period->end])->profit()),true,2,false) }}</h3>
+                            <h3 class="mb-1">{{ currency( normalize( $client->transactions()->whereBetween('date',[$period->start,$period->end])->profit()),true,2,false) }}</h3>
                             <div class="text-muted" title="{{ date_range($period->start,$period->end) }}">Profit
                                 ({{ $period->name }})
                             </div>
