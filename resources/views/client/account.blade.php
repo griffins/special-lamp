@@ -42,7 +42,7 @@
                 </div>
             </div>
         </div>
-        @php $transactions = $client->transactions()->orderByDesc('created_at')->paginate(); @endphp
+        @php $transactions = $client->transactions()->orderByDesc('date')->paginate(); @endphp
         @if($transactions->count()>0)
             <h5 id="transactions">Recent Transactions</h5>
             <table class="table table-striped">
