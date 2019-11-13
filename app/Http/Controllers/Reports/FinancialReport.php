@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Reports;
 
 use App\Account;
+use App\Client;
 use App\Server;
 use App\Transaction;
 use Carbon\Carbon;
@@ -38,6 +39,16 @@ trait FinancialReport
             $load['from'] = $from;
         }
         return view('reports.finance.statement', $load);
+    }
+
+    private function clientDeposits(Request $request, $report)
+    {
+
+        $load = ['report' => $report];
+
+        $query = Client::query();
+        $load['query'] = $query;
+        return view('reports.finance.deposits', $load);
     }
 
 }
