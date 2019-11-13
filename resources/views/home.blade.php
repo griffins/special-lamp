@@ -81,7 +81,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach(\App\Transaction::query()->orderByDesc('created_at')->paginate(20) as $interest)
+                @foreach(\App\Transaction::query()->orderByDesc('closed_at')->paginate(20) as $interest)
                     <tr>
                         <td><b>{{  $interest->ticket }}                    </b></td>
                         <td><b>{{ $interest->type }}</b></td>
