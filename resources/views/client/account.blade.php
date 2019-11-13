@@ -42,13 +42,14 @@
                 </div>
             </div>
         </div>
-        @php $transactions = $client->transactions()->orderByDesc('date')->paginate(); @endphp
+        @php $transactions = $client->transactions()->with('account')->orderByDesc('date')->paginate(); @endphp
         @if($transactions->count()>0)
             <h5 id="transactions">Recent Transactions</h5>
             <table class="table table-striped">
                 <thead>
                 <tr>
                     <td><b>ID</b></td>
+                    <td><b>Account</b></td>
                     <td><b>Type</b></td>
                     <td><b>Item</b></td>
                     <td><b>Amount</b></td>
@@ -63,6 +64,7 @@
                                 <div class="wrap"> {{ strtoupper(($transaction->id)) }}</div>
                             </b>
                         </td>
+                        <td><b>{{ strtoupper( $transaction->account->name)}}</b></td>
                         <td><b>{{ strtoupper( $transaction->type)}}</b></td>
                         <td><b>{{ strtoupper( $transaction->narration) }}</b></td>
                         <td><b>{{ currency($transaction->amount,true,2) }}</b></td>

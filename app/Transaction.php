@@ -11,6 +11,11 @@ class Transaction extends Model
     protected $guarded = ['id', 'dom'];
     protected $dates = ['opened_at', 'closed_at'];
 
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
+    }
+
     public static function fromExtract(TransactionExtract $extract)
     {
         $transaction = static::query()
