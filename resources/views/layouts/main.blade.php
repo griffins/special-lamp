@@ -100,6 +100,11 @@
                                                class="dropdown-item @if(request('section') =='requests') active @endif">
                                                 Registration Requests
                                             </a>
+                                            <a href="#"
+                                               data-toggle="modal" data-target="#profit"
+                                               class="dropdown-item">
+                                                Profits
+                                            </a>
                                         </div>
                                     </li>
                                     @if(user()->id != 4)
@@ -164,6 +169,81 @@
                     </div>
                 @endif
                 @yield('content')
+            </div>
+        </div>
+        <div class="modal fade" id="profit" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalCenterTitle"
+             aria-hidden="true">
+            <div class="modal-dialog  modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <form method="POST" action="{{ route('profit') }}">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalTitle">Profit Transaction</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            @csrf
+                            <div class="form-group">
+                                <label class="col-form-label">Account:</label>
+                                <select class="form-control" name="account_id">
+                                    @foreach(\App\Account::query()->get() as $account)
+                                        <option value="{{$account->account}}">{{ $account->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label class="col-form-label">Type:</label>
+                                        <select class="form-control" name="type">
+                                            <option value="sell">Sell</option>
+                                            <option value="buy">Buy</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="col-form-label">Ticket:</label>
+                                        <input type="text" name="ticket" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label class="col-form-label">Size:</label>
+                                            <input type="number" name="size" step="0.00000001" class="form-control">
+                                        </div>
+                                        <div class="col-4">
+                                            <label class="col-form-label">Commission:</label>
+                                            <input type="number" name="commission" step="0.00000001"
+                                                   class="form-control">
+                                        </div>
+                                        <div class="col-4">
+                                            <label class="col-form-label">Swap:</label>
+                                            <input type="number" name="swap" step="0.00000001" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label class="form-label">Profit/Loss:</label>
+                                            <input type="number" name="amount" step="0.00000001" class="form-control">
+                                        </div>
+                                        <div class="col-4">
+                                            {{ date_picker('Opened At','opened_at', now()->toDateTimeString()) }}
+                                        </div>
+                                        <div class="col-4">
+                                            {{ date_picker('Closed At','closed_at', now()->toDateTimeString()) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                    </form>
+                </div>
             </div>
         </div>
         <div class="container">

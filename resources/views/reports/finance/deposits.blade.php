@@ -11,6 +11,7 @@
             <tr>
                 <th>#</th>
                 <th>Client</th>
+                <th>Account</th>
                 <th>Deposits</th>
                 <th>Profit %</th>
                 <th>Balance</th>
@@ -19,6 +20,7 @@
             @foreach($query->get() as $x => $client)
                 <tr>
                     <td>{{ $x+1 }}</td>
+                    <td>{{ $client->name }}</td>
                     <td>{{ $client->name }}</td>
                     <td>{{  currency( $client->investorTransactions()->deposits() - $client->investorTransactions()->withdrawals()) }}</td>
                     <td>{{  currency( $client->commission) }}</td>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Account;
 use App\Client;
+use App\Foundation\Statement\DomExtract;
+use App\Foundation\Statement\TransactionExtract;
 use App\InvestorTransaction;
 use App\Jobs\InvestorComputation;
 use App\SupportTicket;
@@ -40,7 +42,21 @@ class ClientController extends Controller
 
     public function profit()
     {
-        Client::updateBalances2(Account::query()->findOrFail(request('account_id')), request('value_type'), request('amount'), Carbon::parse(request('date')));
+        $extract = new DomExtract();
+        $extract->account = request('account_id');
+        $transaction = new TransactionExtract();
+        $transaction->dom = $extract;
+        $transaction->ticket = request('ticket');
+        $transaction->type = request('type');
+        $transaction->opened_at = request('opened_at');
+        $transaction->size = request('size');
+        $transaction->item = "xauusd";
+        $transaction->commission = request('commission');
+        $transaction->swap = request('swap');
+        $transaction->closed_at = request('closed_at');
+        $transaction->profit = request('amount');
+        $extract->transactions[] = $transaction;
+        Account::importFromExtract($extract);
         return back()->withMessage('Successful');
     }
 
